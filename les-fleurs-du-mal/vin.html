@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Vin - Les Fleurs du Mal</title>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=General+Sans:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    @font-face { font-family:'Kapakana'; src:url('fonts/Kapakana-VariableFont_wght.ttf') format('truetype'); font-weight:100 900; }
+    :root {
+      --bg-hero:    #3a181d;
+      --bg-body:    #2a0e12;
+      --accent-gold: #c9a96e;
+      --border:     rgba(201,169,110,0.2);
+      --font-title: 'IM Fell English', Georgia, serif;
+      --font-body:  'Cormorant Garamond', Georgia, serif;
+      --font-ui:    'General Sans', sans-serif;
+    }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg-body); color:#fff; font-family:var(--font-body); overflow-x:hidden; }
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:var(--bg-body); }
+    ::-webkit-scrollbar-thumb { background:var(--accent-gold); border-radius:3px; }
+
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:28px 40px; background:linear-gradient(to bottom,rgba(42,14,18,0.9) 0%,transparent 100%); backdrop-filter:blur(2px); }
+    .nav-logo { display:flex; align-items:center; text-decoration:none; }
+    .nav-logo-mark { height:48px; width:auto; filter:invert(1); transition:filter .3s; }
+    .nav-logo:hover .nav-logo-mark { filter:invert(1) sepia(1) saturate(2) hue-rotate(5deg) brightness(1.1); }
+    .nav-links { display:flex; gap:52px; list-style:none; }
+    .nav-links a { font-family:var(--font-ui); font-size:14px; font-weight:300; color:rgba(255,255,255,.7); text-decoration:none; letter-spacing:.04em; position:relative; transition:color .25s; }
+    .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; right:100%; height:1px; background:var(--accent-gold); transition:right .3s; }
+    .nav-links a:hover, .nav-links a.active { color:#fff; }
+    .nav-links a:hover::after, .nav-links a.active::after { right:0; }
+
+    #hero { position:relative; width:100%; height:100vh; min-height:600px; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; background:var(--bg-hero); }
+    .hero-watermark { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Kapakana',serif; font-size:60vw; color:rgba(255,255,255,.03); font-weight:700; line-height:1; pointer-events:none; user-select:none; }
+    .hero-content { position:relative; z-index:2; padding:0 60px 70px; }
+    .hero-tag { font-family:var(--font-ui); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent-gold); margin-bottom:20px; }
+    .hero-title { font-family:'Kapakana',serif; font-size:clamp(80px,14vw,200px); font-weight:400; line-height:.9; color:#fff; }
+    .hero-info { font-family:var(--font-ui); font-size:14px; font-weight:300; color:rgba(255,255,255,.45); letter-spacing:.12em; margin-top:24px; }
+    .hero-divider { position:absolute; bottom:0; left:0; right:0; height:1px; background:linear-gradient(to right,transparent,var(--accent-gold) 30%,var(--accent-gold) 70%,transparent); opacity:.3; }
+
+    #presentation { padding:100px 80px; background:rgba(0,0,0,.3); display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; border-bottom:1px solid var(--border); }
+    .pres-quote { font-family:var(--font-title); font-size:34px; font-style:italic; line-height:1.6; color:#fff; position:relative; padding-top:10px; }
+    .pres-quote::before { content:'"'; font-size:100px; color:var(--accent-gold); opacity:.15; position:absolute; top:-10px; left:-10px; line-height:1; font-family:Georgia,serif; }
+    .pres-text { font-family:var(--font-body); font-size:19px; font-weight:300; line-height:1.9; color:rgba(255,255,255,.6); }
+    .pres-text em { color:var(--accent-gold); font-style:italic; }
+    .pres-stats { display:flex; gap:48px; margin-top:40px; padding-top:40px; border-top:1px solid var(--border); }
+    .stat-number { font-family:'Kapakana',serif; font-size:48px; color:#fff; line-height:1; }
+    .stat-label { font-family:var(--font-ui); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-top:4px; }
+
+    #poemes { padding:100px 60px; }
+    .poemes-header { font-family:var(--font-ui); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent-gold); margin-bottom:60px; }
+    .poemes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+    .poem-card { background:rgba(255,255,255,.03); padding:52px 44px; border-top:1px solid var(--border); transition:background .3s; }
+    .poem-card:hover { background:rgba(255,255,255,.06); }
+    .poem-number { font-family:var(--font-ui); font-size:10px; letter-spacing:.25em; color:var(--accent-gold); margin-bottom:18px; }
+    .poem-title { font-family:var(--font-title); font-size:30px; font-style:italic; color:#fff; margin-bottom:28px; line-height:1.2; }
+    .poem-excerpt { font-family:var(--font-body); font-size:17px; font-style:italic; font-weight:300; line-height:2; color:rgba(255,255,255,.5); border-left:2px solid rgba(201,169,110,.25); padding-left:20px; }
+
+    .sections-nav-label { padding:60px 60px 40px; font-family:var(--font-ui); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent-gold); border-top:1px solid var(--border); }
+    .sections-row { display:grid; grid-template-columns:repeat(5,1fr); gap:0; }
+    .section-link { display:flex; flex-direction:column; justify-content:flex-end; padding:40px 36px; text-decoration:none; min-height:160px; transition:filter .3s; }
+    .section-link:hover { filter:brightness(1.25); }
+    .sl-roman { font-family:var(--font-ui); font-size:10px; letter-spacing:.25em; color:rgba(255,255,255,.4); margin-bottom:10px; }
+    .sl-title { font-family:var(--font-title); font-size:20px; font-style:italic; color:#fff; line-height:1.2; }
+
+    footer { background:#200a0d; padding:60px 80px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:60px; border-top:1px solid var(--border); }
+    .footer-title { font-family:var(--font-title); font-size:30px; font-style:italic; color:#fff; margin-bottom:6px; }
+    .footer-sub { font-family:var(--font-ui); font-size:12px; font-weight:300; color:rgba(255,255,255,.3); letter-spacing:.1em; }
+    .footer-nav-title { font-family:var(--font-ui); font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent-gold); margin-bottom:18px; }
+    .footer-nav-list { list-style:none; }
+    .footer-nav-list li { margin-bottom:8px; }
+    .footer-nav-list a { font-family:var(--font-body); font-size:16px; font-style:italic; color:rgba(255,255,255,.45); text-decoration:none; transition:color .25s; }
+    .footer-nav-list a:hover { color:#fff; }
+    .footer-info { font-family:var(--font-body); font-size:15px; line-height:1.9; color:rgba(255,255,255,.3); }
+    .footer-bottom { background:#180609; padding:18px 80px; border-top:1px solid rgba(255,255,255,.04); display:flex; justify-content:space-between; align-items:center; }
+    .footer-bottom p { font-family:var(--font-ui); font-size:11px; letter-spacing:.1em; color:rgba(255,255,255,.2); }
+    .footer-ornament { font-family:var(--font-title); font-size:20px; color:var(--accent-gold); opacity:.4; }
+    /* Scroll reveal */
+    .reveal { opacity:0; transition:opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+    .reveal-up { transform:translateY(50px); }
+    .reveal-left { transform:translateX(-55px); }
+    .reveal-right { transform:translateX(55px); }
+    .reveal-scale { transform:scale(.93) translateY(20px); }
+    .reveal.visible { opacity:1; transform:none; }
+    @keyframes heroIn { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+    .hero-tag { animation:heroIn .7s .1s cubic-bezier(.16,1,.3,1) both; }
+    .hero-title { animation:heroIn 1s .22s cubic-bezier(.16,1,.3,1) both; }
+    .hero-info { animation:heroIn .7s .4s cubic-bezier(.16,1,.3,1) both; }
+    .nav-toggle { display:none; }
+    @media (max-width:768px) {
+      nav { padding:16px 20px; }
+      .nav-toggle { display:flex; flex-direction:column; gap:6px; background:none; border:none; cursor:pointer; padding:8px; z-index:101; }
+      .nav-toggle span { display:block; width:24px; height:1.5px; background:#fff; transition:transform .3s,opacity .3s; }
+      .nav-toggle.open span:nth-child(1) { transform:rotate(45deg) translate(4.7px,4.7px); }
+      .nav-toggle.open span:nth-child(2) { opacity:0; }
+      .nav-toggle.open span:nth-child(3) { transform:rotate(-45deg) translate(4.7px,-4.7px); }
+      .nav-links { display:none; flex-direction:column; position:fixed; inset:0; background:rgba(0,0,0,.97); backdrop-filter:blur(20px); justify-content:center; align-items:center; gap:44px; z-index:100; }
+      .nav-links.open { display:flex; }
+      .nav-links a { font-family:var(--font-title); font-size:26px; font-style:italic; letter-spacing:.02em; color:rgba(255,255,255,.9); }
+      .nav-links a::after { display:none; }
+      .hero-content { padding:0 22px 52px; max-width:100%; }
+      .hero-watermark { font-size:55vw; }
+      #presentation { grid-template-columns:1fr; padding:52px 22px; gap:32px; }
+      .pres-quote { font-size:22px; line-height:1.6; }
+      .pres-quote::before { font-size:64px; top:-12px; left:-8px; }
+      .pres-text { font-size:15px; line-height:1.9; }
+      .pres-stats { margin-top:32px; padding-top:28px; flex-direction:row; justify-content:space-around; flex-wrap:nowrap; gap:0; }
+      .stat-number { font-size:36px; }
+      .stat-label { font-size:9px; letter-spacing:.1em; }
+      #poemes { padding:52px 16px; }
+      .poemes-header { margin-bottom:36px; }
+      .poemes-grid { grid-template-columns:1fr; gap:3px; }
+      .poem-card { padding:36px 22px; }
+      .poem-title { font-size:26px; margin-bottom:18px; }
+      .poem-excerpt { font-size:15px; line-height:1.9; padding-left:16px; }
+      .sections-nav-label { padding:44px 22px 24px; }
+      .sections-row { grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:3px; }
+      .section-link { min-height:120px; padding:22px 18px; }
+      .sl-roman { margin-bottom:8px; }
+      .sl-title { font-size:15px; line-height:1.3; }
+      footer { grid-template-columns:1fr; padding:48px 22px; gap:36px; }
+      .footer-bottom { padding:16px 22px; flex-direction:column; gap:8px; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="image/logo-fleur-du-mal.svg" alt="Les Fleurs du Mal" class="nav-logo-mark" />
+    </a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="spleen.html">Spleen et Idéal</a></li>
+      <li><a href="tableaux.html">Tableaux Parisiens</a></li>
+      <li><a href="vin.html" class="active">Le Vin</a></li>
+      <li><a href="fleurs.html">Fleurs Du Mal</a></li>
+      <li><a href="revolte.html">Révolte</a></li>
+      <li><a href="mort.html">La Mort</a></li>
+    </ul>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-watermark">III</div>
+    <div class="hero-content">
+      <div class="hero-tag">Section III · Les Fleurs du Mal</div>
+      <div class="hero-title">Le Vin</div>
+      <div class="hero-info">5 poèmes · L'ivresse consolatrice</div>
+    </div>
+    <div class="hero-divider"></div>
+  </section>
+
+  <section id="presentation">
+    <div class="pres-quote">
+      « Un soir, l'âme du vin chantait dans les bouteilles. »
+    </div>
+    <div>
+      <div class="pres-text">
+        Courte mais intense, la section du <em>Vin</em> célèbre l'ivresse comme consolation du peuple et fuite passagère vers un idéal artificiel. Baudelaire n'y fait pas l'éloge de l'alcool en soi, mais de ce qu'il symbolise : la <em>recherche d'un ailleurs</em>, d'un oubli provisoire, d'une fraternité dans la misère.
+        <br><br>
+        Le vin parle à l'homme, chante pour lui, l'élève momentanément au-dessus de sa condition. C'est un paradis artificiel, un avant-goût de l'idéal que la réalité refuse d'accorder.
+      </div>
+      <div class="pres-stats">
+        <div class="stat">
+          <div class="stat-number">5</div>
+          <div class="stat-label">Poèmes</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">III</div>
+          <div class="stat-label">Section</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">1857</div>
+          <div class="stat-label">Publication</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="poemes">
+    <div class="poemes-header">Poèmes emblématiques</div>
+    <div class="poemes-grid">
+      <div class="poem-card">
+        <div class="poem-number">Poème CV</div>
+        <div class="poem-title">L'Âme du vin</div>
+        <div class="poem-excerpt">
+          Un soir, l'âme du vin chantait dans les bouteilles :<br>
+          « Homme, vers toi je pousse, ô cher déshérité,<br>
+          Sous ma prison de verre et mes cires vermeilles,<br>
+          Un chant plein de lumière et de fraternité ! »
+        </div>
+      </div>
+      <div class="poem-card">
+        <div class="poem-number">Poème CVII</div>
+        <div class="poem-title">Le Vin des<br>chiffonniers</div>
+        <div class="poem-excerpt">
+          Souvent à la clarté rouge d'un réverbère<br>
+          Dont le vent bat la flamme et tourmente le verre,<br>
+          Au cœur d'un vieux faubourg, labyrinthe fangeux<br>
+          Où l'humanité grouille en ferments orageux…
+        </div>
+      </div>
+      <div class="poem-card">
+        <div class="poem-number">Poème CVIII</div>
+        <div class="poem-title">Le Vin du<br>solitaire</div>
+        <div class="poem-excerpt">
+          Le regard singulier d'une femme galante<br>
+          Qui se glisse vers nous comme le rayon blanc<br>
+          Que la lune onduleuse envoie au lac tremblant,<br>
+          Quand elle y veut baigner sa beauté nonchalante…
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sections-nav-label">Autres sections</div>
+  <div class="sections-row">
+    <a href="spleen.html" class="section-link" style="background:linear-gradient(to right,#0a0a0a 0%,#1a1a1a 25%,#f0ece8 75%,#ffffff 100%);">
+      <div class="sl-roman">Section I</div>
+      <div class="sl-title">Spleen et Idéal</div>
+    </a>
+    <a href="tableaux.html" class="section-link" style="background:#2e3540;">
+      <div class="sl-roman">Section II</div>
+      <div class="sl-title">Tableaux Parisiens</div>
+    </a>
+    <a href="fleurs.html" class="section-link" style="background:#1a2421;">
+      <div class="sl-roman">Section IV</div>
+      <div class="sl-title">Fleurs du Mal</div>
+    </a>
+    <a href="revolte.html" class="section-link" style="background:#241440;">
+      <div class="sl-roman">Section V</div>
+      <div class="sl-title">Révolte</div>
+    </a>
+    <a href="mort.html" class="section-link" style="background:#3a3330;">
+      <div class="sl-roman">Section VI</div>
+      <div class="sl-title">La Mort</div>
+    </a>
+  </div>
+
+  <footer>
+    <div>
+      <div class="footer-title">Les Fleurs<br>du Mal</div>
+      <div class="footer-sub">Charles Baudelaire · 1857</div>
+    </div>
+    <div>
+      <div class="footer-nav-title">Sections</div>
+      <ul class="footer-nav-list">
+        <li><a href="spleen.html">Spleen et Idéal</a></li>
+        <li><a href="tableaux.html">Tableaux Parisiens</a></li>
+        <li><a href="vin.html">Le Vin</a></li>
+        <li><a href="fleurs.html">Fleurs Du Mal</a></li>
+        <li><a href="revolte.html">Révolte</a></li>
+        <li><a href="mort.html">La Mort</a></li>
+      </ul>
+    </div>
+    <div class="footer-info">
+      Premier recueil poétique de la modernité, <em>Les Fleurs du Mal</em> réunit 126 poèmes publiés entre 1857 et 1868.
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© Domaine public · Les Fleurs du Mal · Charles Baudelaire</p>
+    <div class="footer-ornament">✦</div>
+    <p>Créé par Baptiste Fourtine</p>
+  </div>
+
+  <script>
+  (function(){
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(!e.isIntersecting) return;
+        setTimeout(() => e.target.classList.add('visible'), parseInt(e.target.dataset.delay)||0);
+        obs.unobserve(e.target);
+      });
+    }, {threshold:.1, rootMargin:'0px 0px -30px 0px'});
+
+    var btn=document.querySelector('.nav-toggle'),menu=document.querySelector('.nav-links');
+    if(btn){btn.addEventListener('click',function(){btn.classList.toggle('open');menu.classList.toggle('open');});menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){btn.classList.remove('open');menu.classList.remove('open');});});}
+
+    [
+      {sel:'.pres-quote',                    dir:'reveal-left'},
+      {sel:'#presentation > div:last-child', dir:'reveal-right'},
+      {sel:'.stat',                          dir:'reveal-up',    stagger:100},
+      {sel:'.poemes-header',                 dir:'reveal-up'},
+      {sel:'.poem-card',                     dir:'reveal-up',    stagger:150},
+      {sel:'.sections-nav-label',            dir:'reveal-up'},
+      {sel:'.section-link',                  dir:'reveal-scale', stagger:80},
+    ].forEach(({sel,dir,delay=0,stagger=0}) => {
+      document.querySelectorAll(sel).forEach((el,i) => {
+        el.classList.add('reveal', dir);
+        el.dataset.delay = delay + stagger * i;
+        obs.observe(el);
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
