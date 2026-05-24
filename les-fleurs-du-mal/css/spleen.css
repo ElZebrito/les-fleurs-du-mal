@@ -1,0 +1,17 @@
+:root {
+  --bg-body:          #0D0D0D;
+  --nav-bg:           linear-gradient(to bottom,rgba(0,0,0,.8) 0%,transparent 100%);
+  --bg-footer:        #111;
+  --bg-footer-bottom: #0a0a0a;
+  --pres-bg:          rgba(0,0,0,.5);
+  --hero-fs:          clamp(60px,9vw,130px);
+}
+body { background:var(--bg-body); }
+::-webkit-scrollbar-track { background:#000; }
+/* Spleen : hero en dégradé papier + filigrane aligné à gauche */
+#hero { background:linear-gradient(to right,#0a0a0a 0%,#1a1a1a 25%,#f0ece8 75%,#ffffff 100%); }
+.hero-watermark { font-size:38vw; left:0; transform:translateY(-50%); white-space:nowrap; padding-left:20px; }
+.hero-content { max-width:55%; }
+@media (max-width:768px) {
+  .hero-content { max-width:100%; }
+}

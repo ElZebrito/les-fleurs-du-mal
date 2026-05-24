@@ -1,0 +1,11 @@
+:root {
+  --bg-body:          #222936;
+  --bg-hero:          #2e3540;
+  --nav-bg:           linear-gradient(to bottom,rgba(34,41,54,.9) 0%,transparent 100%);
+  --bg-footer:        #1a1f2a;
+  --bg-footer-bottom: #181d27;
+  --hero-fs:          clamp(50px,8vw,120px);
+  --wm-size:          50vw;
+  --pres-bg:          rgba(0,0,0,.25);
+}
+body { background:var(--bg-body); }
